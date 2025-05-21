@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import AuditLogController from "../controllers/audit-log.controller";
-import ErrorLogController from "../controllers/error-log.controller";
 
 export default class ResponseUtil {
 
@@ -63,8 +61,6 @@ export default class ResponseUtil {
         console.log('Message: ', error.response ? error.response.data : error.message);
 
         // console.log(error.);
-
-        ErrorLogController.saveLog(req.path, source, message, error, req.body);
         return res.json(dataRes);
     }
 
@@ -96,7 +92,6 @@ export default class ResponseUtil {
             data: data
         };
 
-        AuditLogController.saveLog(req.path, source, message, data, req.body, _id, updated_by);
         return res.json(dataRes);
     }
 }

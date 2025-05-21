@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import ResponseUtil from "../utils/ResponseUtil";
-import CategoryController from "../controllers/admin/category.controller";
+import CategoryController from "../controllers/category.controller";
 import { ICategory } from "../models/category.model";
 
 export default [

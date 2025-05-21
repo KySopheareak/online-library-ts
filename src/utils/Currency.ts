@@ -106,7 +106,7 @@ function ones(numberStr: string, isKhmer: boolean) {
     let number = parseInt(numberStr);
 
     // prevent negative value
-    if (number < 1 || number === NaN) {
+    if (number < 1 ||Number.isNaN(number)) {
         number = 0;
     }
     let name = "";
@@ -146,7 +146,7 @@ function tens(numberStr: string, isKhmer: boolean) {
     let number = parseInt(numberStr);
 
     // prevent negative to make it as 32bit interger
-    if (number < 1 || number === NaN) {
+    if (number < 1 || Number.isNaN(number)) {
         number = 0;
     }
     let name = "";

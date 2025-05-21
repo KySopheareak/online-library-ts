@@ -3,11 +3,6 @@ import env from 'dotenv';
 
 env.config();
 
-export { default as UserModel } from "./user.model";
-export { default as RoleModel } from "./role.model";
-export { default as ErrorLogModel } from "./error-log.model";
-export { default as AuditLogModel } from "./audit-log.model";
-
 export let connection: mongoose.Connection | null;
 export const connect = () => {
     mongoose.Promise = global.Promise

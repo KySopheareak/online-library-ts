@@ -1,5 +1,5 @@
-import categoryModel, { ICategory } from '../../models/category.model';
-import { getNextSequenceValue } from "../utils/counter.controller";
+import categoryModel, { ICategory } from '../models/category.model';
+import { getNextSequenceValue } from "./utils/counter.controller";
 
 export default class CategoryController {
 

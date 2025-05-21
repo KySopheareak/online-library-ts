@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { ValidationChain } from "express-validator";
-import AuthHandlers from "./auth-handlers";
 import FormHandler, { FormHandlerMutiples } from "./form-handlers";
 import ValidationHandler from "./validation-handler";
 
@@ -46,65 +45,12 @@ export const applyRoutes = (basePath: String, routes: Route[], router: Router) =
         const { method,
             path,
             validators,
-            authenticate,
-            authenticateEnterpriseUser,
-            authenticateViaQuery,
-            authenticateEnterpriseUserViaQuery,
-            authenticateResetPasswordEnterpriseUser,
-            authorized_roles,
             form_data,
             form_data_multiple_file,
-            handler,
-            authorizeApps,
-            allowFromOrigin,
-            authenticationRefreshToken,
-            authenticationRefreshTokenEnterpriseUser,
-            authNSSFToken,
-            authenticateFile
-        } = route;
+            handler        } = route;
 
         let middleware = [];
         middleware.push(basePath + path);
-
-        if (authNSSFToken) {
-            middleware.push(new AuthHandlers().authorizeNSSFToken());
-        }
-
-        if (authenticateFile) {
-            middleware.push(new AuthHandlers().authenticateFile);
-        }
-
-        if (authenticate) {
-            middleware.push(new AuthHandlers().authenticateJWT);
-        }
-
-        if (authenticationRefreshToken) {
-            middleware.push(new AuthHandlers().authenticateJWTRefreshToken);
-        }
-
-        if (authenticateViaQuery) {
-            middleware.push(new AuthHandlers().authenticateJWTViaQuery);
-        }
-
-        if (authenticateEnterpriseUser) {
-            middleware.push(new AuthHandlers().authenticateEnterpriseUserJWT);
-        }
-
-        if (authenticationRefreshTokenEnterpriseUser) {
-            middleware.push(new AuthHandlers().authenticateJWTRefreshTokenEnterpriseUser);
-        }
-
-        if (authenticateEnterpriseUserViaQuery) {
-            middleware.push(new AuthHandlers().authenticateJWTViaQueryEnterpriseUser);
-        }
-
-        if (authenticateResetPasswordEnterpriseUser) {
-            middleware.push(new AuthHandlers().authenticateJWTResetPasswordTokenEnterpriseUser);
-        }
-
-        if (authorized_roles) {
-            middleware.push(new AuthHandlers().authorize(authorized_roles));
-        }
 
         if (form_data) {
             middleware.push(new FormHandler().parse);
@@ -113,11 +59,7 @@ export const applyRoutes = (basePath: String, routes: Route[], router: Router) =
         if (form_data_multiple_file) {
             middleware.push(new FormHandlerMutiples().parse);
         }
-
-        if (allowFromOrigin) {
-            middleware.push(new AuthHandlers().originAuthorize());
-        }
-
+        
         if (validators) {
             middleware.push(validators, new ValidationHandler().validate);
         }

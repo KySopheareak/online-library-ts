@@ -1,6 +1,7 @@
-import BookModel, { IBook } from '../../models/book.model';
-import categoryModel from '../../models/category.model';
-import { getNextSequenceValue } from '../utils/counter.controller';
+import BookModel, { IBook } from '../models/book.model';
+import categoryModel from '../models/category.model';
+import ResponseUtil from '../utils/ResponseUtil';
+import { getNextSequenceValue } from './utils/counter.controller';
 export default class BookListController {
 
     public static async getBookList(req: any, res: any): Promise<any[] | null> {
@@ -33,18 +34,22 @@ export default class BookListController {
     }
     
 
-    public static async createBook(bookData: IBook): Promise<IBook | null> {
+    public static async createBookHandler(bookData: IBook, req: any, res: any) {
         try {
-          const id = await getNextSequenceValue("IBook", "id");
-          const newBookData = { ...bookData, id };
-          const newBook = new BookModel(newBookData);
-          await newBook.save();
-          return newBook;
+        const id = await getNextSequenceValue("IBook", "id");
+        const newBookData = { ...bookData, id };
+        const newBook = new BookModel(newBookData);
+        await newBook.save();
+
+        return res.status(201).json({
+            message: "Book created successfully",
+            data: newBook,
+        });
         } catch (error) {
-          console.error("Error creating book:", error);
-          throw error;
+        console.error("Error creating book:", error);
+        ResponseUtil.failwithLog(req, res, 500, "Internal Server Error", "CREATE_BOOK", error);
         }
-    }
+  }
 
     public static async getBooksByIds(bookIds: any[]) {
         return await BookModel.find({ _id: { $in: bookIds } }).select("price -_id");

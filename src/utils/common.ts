@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import moment from "moment";
 import { Types } from "mongoose";
 import { Readable } from "stream";
-import configModel, { ConfigDocument } from "../models/config.model";
 import { BEN_DETAIL_STATUS, CONFIG, COUNTER, PAYMENT_ITEM_TYPE, PAYMENT_STATUS, PENALTY_TYPE, UTIL_STATUS } from "./constants";
 
 const url = require('url');
@@ -244,35 +243,6 @@ export default class CommonUtil {
         return new_text;
     }
 
-    /**
-     * Get Chankitek Date
-     * @param date 
-     * @returns 
-     */
-    public static async getChhankitekDate(date: string) {
-
-        try {
-
-            let chankitek = await configModel.findOne({ name: CONFIG.CHANKITEK }) as ConfigDocument;
-
-            let headers = {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${chankitek.value.api_key}`
-            };
-
-            var res = await axios.get(`${chankitek.value.api_url}/date?date=${date}`, { headers: headers });
-
-            if (res.data.status != 1) {
-                return '';
-            }
-
-            return res.data.data;
-
-        } catch (err) {
-            console.error(err);
-            return '';
-        }
-    }
 
     /**
      * Format Number
@@ -280,34 +250,6 @@ export default class CommonUtil {
      */
     public static formatNumber(num: number) {
         return num.toLocaleString();
-    }
-
-    /**
-     * Encrypt data
-     * @param text 
-     */
-    public static async encrypt(text: string) {
-        const algorithm = 'aes-256-ctr';
-        let encrypt = await configModel.findOne({ name: CONFIG.ENCRYPT }) as ConfigDocument;
-
-        const cipher = crypto.createCipheriv(algorithm, encrypt.value.secret_key, encrypt.value.iv);
-        const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
-
-        return encrypted.toString('hex');
-    }
-
-    /**
-     * Decrypt data
-     * @param hash 
-     */
-    public static async decrypt(hash: string) {
-        const algorithm = 'aes-256-ctr';
-        let encrypt = await configModel.findOne({ name: CONFIG.ENCRYPT }) as ConfigDocument;
-
-        const decipher = crypto.createDecipheriv(algorithm, encrypt.value.secret_key, encrypt.value.iv);
-        const decrpyted = Buffer.concat([decipher.update(Buffer.from(hash, 'hex')), decipher.final()]);
-
-        return decrpyted.toString();
     }
 
 

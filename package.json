@@ -49,6 +49,7 @@
     "mongoose-hidden": "^1.9.1",
     "morgan": "^1.10.0",
     "multer": "^2.0.0",
+    "multer-gridfs-storage": "^5.0.2",
     "nodemailer": "^6.6.3",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",

@@ -1,16 +1,17 @@
-import multer from 'multer';
-import path from 'path';
+import multer from "multer";
+import { GridFsStorage } from "multer-gridfs-storage";
+import dotenv from "dotenv";
 
-const storage = multer.diskStorage({
-  destination: 'uploads/',
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const filename = `${Date.now()}${ext}`;
-    cb(null, filename);
-  }
+dotenv.config();
+
+const storage = new GridFsStorage({
+  url: process.env.MONGO_URI!,
+  file: (req, file) => {
+    return {
+      filename: Date.now() + "_" + file.originalname,
+      bucketName: "uploads",
+    };
+  },
 });
 
-export const uploadBookCover = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
-}).single('coverImage'); // Must match your form field name
+export const upload = multer({ storage });
