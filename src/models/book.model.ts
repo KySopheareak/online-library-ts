@@ -9,7 +9,7 @@ export interface IBook {
     stock: Number,
     category: String [],
     description: String,
-    coverImage?: { 
+    file?: { 
         _id: Types.ObjectId,
         name: String
     }
@@ -25,7 +25,7 @@ const schema = new Schema({
     stock: {type: Number, require: true},
     category: {type: [Types.ObjectId], ref: 'category', require: true},
     description: {type: String, require: false},
-    coverImage: { 
+    file: { 
         _id: {type: Types.ObjectId, require: true},
         name: {type: String, require: true}
     }

@@ -8,18 +8,14 @@ import bookListRoute from "./routes/book-list.route";
 import customerRoute from "./routes/customer.route";
 import orderRoute from "./routes/order.route";
 import categoryRoute from "./routes/category.route";
-import path from 'path';
 
 // mongoose.set('debug', true);
 
 const app = express();
 
+app.use(express.static("views"));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 //NOTE Extend Express Request as global
 declare global {
@@ -28,6 +24,7 @@ declare global {
       context?: any;
       loginUser?: any;
       decoded?: any;
+      // files?: any
       files?:
         | {
             [fieldname: string]: Express.Multer.File[];
