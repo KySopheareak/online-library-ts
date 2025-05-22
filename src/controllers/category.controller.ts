@@ -1,5 +1,4 @@
 import categoryModel, { ICategory } from '../models/category.model';
-import { getNextSequenceValue } from "./utils/counter.controller";
 
 export default class CategoryController {
 
@@ -32,8 +31,7 @@ export default class CategoryController {
 
     public static async createCategory(data: ICategory): Promise<ICategory | null> {
         try {
-          const id = await getNextSequenceValue("ICategory", "id");
-          const categoryData = { ...data, id };
+          const categoryData = { ...data };
           const newCategory = new categoryModel(categoryData);
           await newCategory.save();
           return newCategory;
