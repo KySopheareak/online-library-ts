@@ -4,9 +4,10 @@ import errorHandlers from "./middleware/error-handlers";
 import { applyMiddleware, applyRoutes } from "./middleware/handlers";
 import middleware from "./middleware/index";
 import * as models from "./models/utils/index.model";
-import bookListRoute from "./routes/book-list.route";
+import bookListRoute from "./routes/book.route";
 import categoryRoute from "./routes/category.route";
 import fileRoute from "./routes/file.route";
+import storyRoute from "./routes/story.route";
 
 const app = express();
 
@@ -40,7 +41,7 @@ applyMiddleware(middleware, app);
 applyRoutes("/api", bookListRoute, app);
 applyRoutes("/api", categoryRoute, app);
 applyRoutes("/api", fileRoute, app);
-
+applyRoutes("/api", storyRoute, app);
 
 applyMiddleware(errorHandlers, app);
 

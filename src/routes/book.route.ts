@@ -2,19 +2,18 @@ import { Request, Response } from "express";
 import BookListController from "../controllers/book-list.controller";
 import ResponseUtil from "../utils/ResponseUtil";
 import IBook from "../models/book.model";
-import path from "path";
 
 export default [
   {
-    path: "/books",
+    path: "/book",
     method: "get",
     handler: async (req: Request, res: Response) => {
       try {
-        const { search, category } = req.body;
+        const { title, category } = req.body;
 
-        const filter: Partial<{ search: string; category: any }> = {};
+        const filter: Partial<{ title: string; category: any }> = {};
 
-        if (search) filter.search = search;
+        if (title) filter.title = title;
         if (category) filter.category = category;
 
         await BookListController.getBookList(filter, res);
@@ -26,7 +25,7 @@ export default [
           500,
           "Internal Server Error",
           "BOOK_LIST",
-          error
+          error 
         );
       }
     },
@@ -65,12 +64,39 @@ export default [
       try {
         const book = await IBook.findById(req.params.id)
           .populate({path: 'category', select: 'name_kh name_en -_id'})
-          .populate({path: 'file', select: 'filename originalname _id'});
+          .populate({path: 'file', select: 'filename originalname _id'})
+          .populate({path: 'full_story', select: 'content'});
         if (!book) return res.status(404).json({ message: "Book not found" });
-        res.json(book);
+        res.json({
+          message: 'SUCCESS!',
+          data: book,
+          status: 1,
+        });
       } catch (error) {
         res.status(500).json({ message: "Internal server error" });
       }
     },
   },
+
+  {
+    path: "/book/:id",
+    method: "patch",
+    handler: async (req: Request, res: Response) => {
+      try {
+        const { title, author, category, description, full_story, file } = req.body;
+        const bookData = { title, author, category, description, full_story, file };
+        const updatedBook = await IBook.findByIdAndUpdate(
+          req.params.id,
+          bookData,
+          { new: true }
+        );
+
+        if (!updatedBook) return res.status(404).json({ message: "Book not found" });
+
+        res.json(updatedBook);
+      } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+      }
+    }
+  }
 ];

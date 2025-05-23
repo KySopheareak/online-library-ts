@@ -33,7 +33,16 @@ export default [
           buffer: buffer,
         });
 
-        res.json({ message: "File uploaded", file: savedFile });
+        res.json({
+          message: "File uploaded",
+          file: {
+            filename: savedFile.filename,
+            originalname: savedFile.originalname,
+            path: savedFile.path,
+            size: savedFile.size,
+            mimetype: savedFile.mimetype,
+          },
+        });
       } catch (error) {
         console.error("===> Upload Error: ", error);
         res.status(500).json({ message: "Internal server error" });

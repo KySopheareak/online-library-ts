@@ -6,7 +6,7 @@ export interface IBook {
     author: String,
     category: String[],
     description: String,
-    full_story?: any,
+    full_story?: Types.ObjectId,
     file?: Types.ObjectId
 }
 
@@ -17,7 +17,7 @@ const schema = new Schema({
     author: {type: String, require: true},
     category: {type: [Types.ObjectId], ref: 'category', require: true},
     description: {type: String, require: false},
-    full_story: { type: Schema.Types.Mixed, required: false },
+    full_story: { type: Types.ObjectId, ref: 'stories', required: false },
     file: { type: Types.ObjectId, ref: 'files', required: false },
 }, { timestamps: true }).plugin(mongooseHidden(), { hidden: { _id: false } })
 

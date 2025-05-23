@@ -5,11 +5,18 @@ export default class BookListController {
 
     public static async getBookList(req: any, res: any): Promise<any[] | null> {
         try {
-            const filters = req || {};
+            const filters = req || {};             
+            if (filters.category) {
+                filters.category = { $in: filters.category };
+            }
+            if (filters.title) {
+                filters.title = { $regex: filters.title, $options: 'i' };
+            }
+            
             const books = await BookModel.find(filters)
                 .sort({ _id: 1 })
                 .populate({ path: 'category', select: 'name_kh name_en -_id' })
-                .populate({ path: 'file', select: 'filename originalname buffer _id' });
+                .populate({ path: 'file', select: '_id' });
 
             if (books.length === 0) {
                 return res.status(200).json({ 
