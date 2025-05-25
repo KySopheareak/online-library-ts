@@ -6,7 +6,7 @@ import IBook from "../models/book.model";
 export default [
   {
     path: "/book",
-    method: "get",
+    method: "post",
     handler: async (req: Request, res: Response) => {
       try {
         const { title, category } = req.body;
