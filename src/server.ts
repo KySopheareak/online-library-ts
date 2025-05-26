@@ -8,6 +8,7 @@ import bookListRoute from "./routes/book.route";
 import categoryRoute from "./routes/category.route";
 import fileRoute from "./routes/file.route";
 import storyRoute from "./routes/story.route";
+import userRoute from "./routes/user.route";
 
 const app = express();
 
@@ -42,6 +43,7 @@ applyRoutes("/api", bookListRoute, app);
 applyRoutes("/api", categoryRoute, app);
 applyRoutes("/api", fileRoute, app);
 applyRoutes("/api", storyRoute, app);
+applyRoutes("/api", userRoute, app);
 
 applyMiddleware(errorHandlers, app);
 
